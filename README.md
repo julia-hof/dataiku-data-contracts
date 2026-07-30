@@ -116,7 +116,7 @@ data_contracts/
 
 This project accompanies my blog series on data contracts.
 
-- Part 1 – [The Case for Data Contracts]([https://yourblog.com/data-contracts](https://medium.com/@julhofmeister/the-case-for-data-contracts-e2c2af6ee2e1)) 
+- Part 1 – [The Case for Data Contracts](https://medium.com/@julhofmeister/the-case-for-data-contracts-e2c2af6ee2e1) 
 - Part 2 – Operationalizing Data Contracts with Dataiku *(coming soon)*
 
 ---
