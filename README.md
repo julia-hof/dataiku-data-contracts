@@ -28,6 +28,16 @@ This plugin automates much of that process by generating standardized contracts 
 
 ---
 
+## Installation
+
+Download this repository as a zip file and upload it in your Dataiku instance under Administration & Settings -> Plugins.
+
+## Plugin Configuration
+
+Configure the filesystem the managed folder is saved in and any metadata options before using the macro. Add the sensitive tags, classifications, and categories that users can select when generating data contracts.
+
+![Plugin Settings](assets/Parameter_Config.png)
+
 ## Example Contract
 
 ```json
@@ -119,4 +129,4 @@ Apache 2.0
 
 ## Disclaimer
 
-This is an independent open-source project built using the Dataiku plugin framework and is not an officially supported Dataiku product.
+This is an independent open-source project built using the Dataiku plugin framework and is not an officially supported Dataiku product. Any issues please open a pull request or reach out to julia.hofmeister@dataiku.com.
