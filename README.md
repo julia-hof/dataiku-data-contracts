@@ -21,10 +21,12 @@ This plugin automates much of that process by generating standardized contracts 
 - Automatically extracts dataset schema
 - Captures table and column descriptions
 - Generates standardized JSON data contracts
-- Supports sensitive data metadata designations
-- Supports classifications and governance categories
+- Supports optional column-level tags
+- Supports optional classifications and governance categories
+- Allows administrators to configure metadata values
+- Optionally allows users to enter custom tag values
 - Infers numeric precision (`multipleOf`) where possible
-- Creates managed folders automatically
+- Creates managed folder automatically
 
 ---
 
@@ -34,9 +36,69 @@ Download this repository as a zip file and upload it in your Dataiku instance un
 
 ## Plugin Configuration
 
-Configure the filesystem the managed folder is saved in and any metadata options before using the macro. Add the sensitive tags, classifications, and categories that users can select when generating data contracts.
+Before using the **Data Contract Generator** macro, configure the plugin settings for your project or organization.
 
-![Plugin Settings](assets/Parameter_Config.png)
+![Plugin Settings](assets/parameter_config.png)
+
+### Managed Folder Filesystem
+
+Choose the filesystem connection where the `data_contracts` managed folder should be created. When the macro runs, it will create the `data_contracts` folder in the project if it does not already exist, then write the generated JSON data contract to that folder.
+
+### Metadata Options
+
+The plugin can optionally include column-level metadata in the generated data contract. Use the plugin settings to choose which metadata fields your organization wants to support:
+
+- **Tags**
+- **Classifications**
+- **Categories**
+
+If a metadata type is enabled, it will appear in the macro screen when users generate a data contract. If it is disabled, that field will be hidden from the macro and omitted from the generated JSON.
+
+### Tags
+
+Add the tag values that users should be able to select for columns when generating data contracts. Tags are written to the contract as an array, so users can select multiple tags for a single column.
+
+Enable **Allow custom tag values** if users should be able to type their own tag values in addition to selecting from the configured list. Leave this unchecked if users should only use the approved tag values configured by the plugin administrator.
+
+### Classifications
+
+Add the classification values that users should be able to select for columns. Classifications are single-select per column.
+
+Enable classifications only if your organization uses a formal classification taxonomy. If classifications are not needed, disable this option and the generated contract will omit the `classification` field.
+
+### Categories
+
+Add the category values that users should be able to select for columns. Categories are single-select per column.
+
+Enable categories only if your organization groups sensitive or governed data into categories. If categories are not needed, disable this option and the generated contract will omit the `category` field.
+
+### Recommended Setup
+
+At a minimum, select the filesystem for the managed folder and decide which metadata fields should be available to users. Then add the approved values for any enabled metadata fields. This ensures users can generate consistent data contracts while still allowing each organization to use its own terminology.
+
+---
+
+## Generate a Data Contract
+
+After the plugin is configured, select the dataset you want to document and run the **Generate Data Contract** macro, located under "Other Actions".
+
+![Generate Data Contract Macro](assets/macro_location.png)
+
+In the macro screen:
+
+1. The selected dataset is prepopulated but you can change it to a different one.
+2. Add one row for each column that needs additional metadata.
+3. Select the column.
+4. Choose one or more tags, if tags are enabled.
+5. Choose a classification, if classifications are enabled.
+6. Choose a category, if categories are enabled.
+7. Run the macro.
+
+The plugin will generate a JSON data contract and save it to the project’s `data_contracts` managed folder.
+
+![Generate Data Contract Macro](assets/generate_data_contract_macro.png)
+
+---
 
 ## Example Contract
 
@@ -57,9 +119,8 @@ Configure the filesystem the managed folder is saved in and any metadata options
       "type": "string",
       "title": "customer_id",
       "description": "Unique customer identifier",
-      "sensitive": "id",
-      "classification": Input a classification type,
-      "category": Input a category
+      "tag": "id",
+      "category": "PII"
     },
     "amount": {
       "order": 3,
@@ -102,7 +163,7 @@ data_contracts/
 
 ## Compatibility
 
-- Dataiku DSS 12.7+
+- Developed for DSS 12.7, tested and compatible through 14.7
 
 ---
 
@@ -121,6 +182,12 @@ This project accompanies my blog series on data contracts.
 
 ---
 
+## Contributing
+
+Contributions are welcome. Please open an issue or pull request if you find a bug, want to improve the plugin, or have ideas for additional contract formats.
+
+---
+
 ## License
 
 Apache 2.0
@@ -129,4 +196,4 @@ Apache 2.0
 
 ## Disclaimer
 
-This is an independent open-source project built using the Dataiku plugin framework and is not an officially supported Dataiku product. Any issues please open a pull request or reach out to julia.hofmeister@dataiku.com.
+This is an independent open-source project built using the Dataiku plugin framework and is not an officially supported Dataiku product. For issues, please open a pull request or contact julia.hofmeister@dataiku.com.
