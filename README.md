@@ -96,7 +96,7 @@ In the macro screen:
 
 The plugin will generate a JSON data contract and save it to the project’s `data_contracts` managed folder.
 
-![Generate Data Contract Macro](assets/generate_data_contract_macro.png)
+![Generate Data Contract Macro](assets/macro_screen.png)
 
 ---
 
@@ -119,7 +119,7 @@ The plugin will generate a JSON data contract and save it to the project’s `da
       "type": "string",
       "title": "customer_id",
       "description": "Unique customer identifier",
-      "tag": "id",
+      "tag": "sensitive",
       "category": "PII"
     },
     "amount": {
@@ -132,16 +132,6 @@ The plugin will generate a JSON data contract and save it to the project’s `da
   }
 }
 ```
-
----
-
-## How it Works
-
-1. Select a dataset.
-2. Launch the **Generate Data Contract** macro.
-3. Review and add governance metadata.
-4. The plugin generates a JSON data contract.
-5. The contract is written to the project's `data_contracts` managed folder.
 
 ---
 
@@ -184,7 +174,7 @@ This project accompanies my blog series on data contracts.
 
 ## Contributing
 
-Contributions are welcome. Please open an issue or pull request if you find a bug, want to improve the plugin, or have ideas for additional contract formats.
+Contributions are welcome. Please open an issue or pull request if you find a bug or want to improve the plugin.
 
 ---
 
