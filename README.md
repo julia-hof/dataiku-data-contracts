@@ -36,13 +36,26 @@ Download this repository as a zip file and upload it in your Dataiku instance un
 
 ## Plugin Configuration
 
-Before using the **Data Contract Generator** macro, configure the plugin settings for your project or organization.
-
-![Plugin Settings](assets/parameter_config.png)
+Before using the **Data Contract Generator** macro, configure where generated contracts should be stored and which optional metadata fields your organization wants to support.
 
 ### Managed Folder Filesystem
 
-Choose the filesystem connection where the `data_contracts` managed folder should be created. When the macro runs, it will create the `data_contracts` folder in the project if it does not already exist, then write the generated JSON data contract to that folder.
+The macro writes generated contracts to a project managed folder named `data_contracts`.
+
+Before running the macro, make sure an admin does one of the following:
+
+1. Create a managed folder in the project named `data_contracts`, or
+2. Make sure the connection selected in the plugin settings allows new managed folders to be created.
+
+To allow the macro to create the folder automatically, a Dataiku administrator should enable managed folder creation on the selected connection.
+
+<p align="center">
+  <img src="assets/connection_config.png" alt="Allow managed folders connection setting" width="500">
+</p>
+
+The setting is found in the Admin Settings -> Connections under the connection’s "Usage Params".
+
+If **Allow managed folders** is not enabled for the selected connection, the macro will not be able to create the `data_contracts` folder automatically. In that case, create the managed folder manually or choose another connection that supports managed folder creation.
 
 ### Metadata Options
 
@@ -53,6 +66,8 @@ The plugin can optionally include column-level metadata in the generated data co
 - **Categories**
 
 If a metadata type is enabled, it will appear in the macro screen when users generate a data contract. If it is disabled, that field will be hidden from the macro and omitted from the generated JSON.
+
+![Plugin Settings](assets/parameter_config.png)
 
 ### Tags
 
@@ -74,15 +89,16 @@ Enable categories only if your organization groups sensitive or governed data in
 
 ### Recommended Setup
 
-At a minimum, select the filesystem for the managed folder and decide which metadata fields should be available to users. Then add the approved values for any enabled metadata fields. This ensures users can generate consistent data contracts while still allowing each organization to use its own terminology.
+At a minimum, select the filesystem for the managed folder and decide which metadata fields should be available to users. Then add the approved values for any enabled metadata fields. This ensures users can generate consistent data contracts while still allowing each organization to use its own terminology. It is recommended to allow managed folder creation on your filesystem connection, otherwise an admin will have to manually create the managed folder in each project.
 
 ---
 
 ## Generate a Data Contract
 
 After the plugin is configured, select the dataset you want to document and run the **Generate Data Contract** macro, located under "Other Actions".
-
-![Generate Data Contract Macro](assets/macro_location.png)
+<p align="center">
+  <img src="assets/macro_location.png" alt="Generate Data Contract macro location" width="425">
+</p>
 
 In the macro screen:
 
