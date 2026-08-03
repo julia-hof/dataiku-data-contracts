@@ -38,11 +38,11 @@ Download this repository as a zip file and upload it in your Dataiku instance un
 
 Before using the **Data Contract Generator** macro, configure where generated contracts should be stored and which optional metadata fields your organization wants to support.
 
-### Managed Folder Filesystem
+### Managed Folder Location
 
-The macro writes generated contracts to a project managed folder named `data_contracts`.
+The macro writes generated contracts to a project managed folder named `data_contracts`. In the macro settings, choose a connection that allows managed folders, like Dataiku filesystem, Databricks/Snowflake, S3/ADLS/GCP, or another file-based connection. 
 
-Before running the macro, make sure an admin does one of the following:
+Before running the macro, make sure an admin does one of the following with the chosen connection:
 
 1. Create a managed folder in the project named `data_contracts`, or
 2. Make sure the connection selected in the plugin settings allows new managed folders to be created.
@@ -67,23 +67,27 @@ The plugin can optionally include column-level metadata in the generated data co
 
 If a metadata type is enabled, it will appear in the macro screen when users generate a data contract. If it is disabled, that field will be hidden from the macro and omitted from the generated JSON.
 
+Tags are written as an array, so users can select more than one tag for the same column. Classifications and categories are single-select per column.
+
 ![Plugin Settings](assets/parameter_config.png)
 
 ### Tags
 
-Add the tag values that users should be able to select for columns when generating data contracts. Tags are written to the contract as an array, so users can select multiple tags for a single column.
+Add the tag values that users should be able to select for columns when generating data contracts.
 
-Enable **Allow custom tag values** if users should be able to type their own tag values in addition to selecting from the configured list. Leave this unchecked if users should only use the approved tag values configured by the plugin administrator.
+Enable **Allow custom tag values** if users should be able to type their own tag values in addition to selecting from the configured list. Leave this unchecked if users should only use the approved tag values configured by the plugin administrator. Custom tags are added to the same `tag` array as configured dropdown tags.
+
+If custom tag values are not enabled, users can only choose from the tag values configured in the plugin settings.
 
 ### Classifications
 
-Add the classification values that users should be able to select for columns. Classifications are single-select per column.
+Add the classification values that users should be able to select for columns. 
 
 Enable classifications only if your organization uses a formal classification taxonomy. If classifications are not needed, disable this option and the generated contract will omit the `classification` field.
 
 ### Categories
 
-Add the category values that users should be able to select for columns. Categories are single-select per column.
+Add the category values that users should be able to select for columns. 
 
 Enable categories only if your organization groups sensitive or governed data into categories. If categories are not needed, disable this option and the generated contract will omit the `category` field.
 
@@ -120,9 +124,7 @@ The plugin will generate a JSON data contract and save it to the project’s `da
 
 ```json
 {
-  "name": "customer_transactions",
-  "description": "Customer transaction history used for fraud detection.",
-
+  "type": "object",
   "properties": {
     "transaction_id": {
       "order": 1,
@@ -135,7 +137,7 @@ The plugin will generate a JSON data contract and save it to the project’s `da
       "type": "string",
       "title": "customer_id",
       "description": "Unique customer identifier",
-      "tag": "sensitive",
+      "tag": ["id", "sensitive"],
       "category": "PII"
     },
     "amount": {
@@ -144,8 +146,23 @@ The plugin will generate a JSON data contract and save it to the project’s `da
       "title": "amount",
       "description": "Transaction amount",
       "multipleOf": 0.01
+    },
+    "transaction_date": {
+      "order": 4,
+      "type": "string",
+      "title": "transaction_date",
+      "description": "Date of the transaction",
+      "format": "date"
+    },
+    "created_at": {
+      "order": 5,
+      "type": "string",
+      "title": "created_at",
+      "description": "Timestamp when the record was created",
+      "format": "date-time"
     }
-  }
+  },
+  "description": "Customer transaction history used for fraud detection."
 }
 ```
 
@@ -164,6 +181,8 @@ inside a Dataiku managed folder
 ```
 data_contracts/
 ```
+
+If the `data_contracts` managed folder does not already exist, the macro attempts to create it on the storage connection selected in the plugin settings. A Dataiku administrator may need to enable managed folder creation on that connection.
 
 ---
 
